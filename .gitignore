@@ -4,3 +4,4 @@
 *.swp
 .env
 .DS_Store
+.npmrc
