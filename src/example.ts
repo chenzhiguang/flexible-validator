@@ -4,15 +4,15 @@ const validator = new Validator({
   username: {
     required: true,
     string: true,
-    minlen: [4, 'too short'],
+    minlen: [3, 'too short'],
     maxlen: [20, 'too long'],
   },
   age: {
+    required: true,
     number: true,
     use: {
       'Too young': (input) => {
-        console.log(input);
-        return input < 18;
+        return input >= 18;
       },
     },
   },
@@ -23,13 +23,18 @@ const validator = new Validator({
   password: {
     minlen: 6,
     maxlen: 20,
-    use: {},
+    use: {
+      'must contain an uppercase letter': /[A-Z]+/,
+    },
   },
 });
 
 const data = {
-  //username: undefined,
+  username: undefined,
+  //username: 'ok',
+  email: 'email',
   age: 10,
+  password: '0000',
 };
 
 // Run all the validation patterns and output all the errors

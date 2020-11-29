@@ -14,9 +14,13 @@ export type Restriction = {
 
 export type Pattern = [RuleFun, string];
 export type Patterns = Pattern[];
-export type Restrictions = { [key: string]: Restriction };
+export type Schema = { [key: string]: Restriction };
 
-export type ErrorData = {
+export type Error = {
   field: string;
-  code: string;
+  error: string;
+};
+
+export type Errors = {
+  [key: string]: string[];
 };

@@ -1,20 +1,7 @@
-import { Pattern, Patterns } from '../types';
-
-const strlen = (str?: string): number => {
-  let count = 0;
-  if (str) {
-    for (let i = 0, len = str.length; i < len; i++) {
-      count += str.charCodeAt(i) < 256 ? 1 : 2;
-    }
-  }
-  return count;
-};
+import { Pattern, Patterns, RuleFun } from '../types';
+import { isNumber, strlen, uncountable } from './utils';
 
 const definedMap: { [key: string]: (args: any) => Pattern } = {
-  required: (arg): Pattern => {
-    return [(input) => input !== undefined, arg === true ? 'required' : arg];
-  },
-
   string: (arg): Pattern => {
     return [
       (input) => typeof input === 'string',
@@ -23,29 +10,34 @@ const definedMap: { [key: string]: (args: any) => Pattern } = {
   },
 
   number: (arg): Pattern => {
+    return [(input) => isNumber(input), arg === true ? 'not_number' : arg];
+  },
+
+  minlen: (arg): Pattern => {
+    const [len, error] = Array.isArray(arg) ? arg : [arg];
+
     return [
-      (input) => typeof input === 'number' && !isNaN(input),
-      arg === true ? 'not_number' : arg,
+      (input) => uncountable(input) || strlen(input.toString()) >= len,
+      error ?? 'too_short',
     ];
   },
 
-  minlen: ([len, code]): Pattern => {
-    return [(input) => strlen(input.toString()) >= len, code ?? 'too_short'];
-  },
-
-  maxlen: ([len, code]): Pattern => {
-    return [(input) => strlen(input.toString()) <= len, code ?? 'too_long'];
+  maxlen: (arg): Pattern => {
+    const [len, error] = Array.isArray(arg) ? arg : [arg];
+    return [
+      (input) => uncountable(input) || strlen(input.toString()) <= len,
+      error ?? 'too_long',
+    ];
   },
 
   email: (arg): Pattern => {
-    return [
-      (input) => {
-        return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-          input
-        );
-      },
-      arg === true ? 'not_email' : arg,
-    ];
+    const rule: RuleFun = (input) => {
+      return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        input
+      );
+    };
+
+    return [rule, arg === true ? 'not_email' : arg];
   },
 };
 
@@ -53,6 +45,9 @@ export const parseDefined = (defined: { [key: string]: any }): Patterns => {
   const patterns: Patterns = [];
 
   for (const name in defined) {
+    if (name === 'required') {
+      continue;
+    }
     if (Object.keys(definedMap).indexOf(name) !== -1) {
       patterns.push(definedMap[name](defined[name]));
     }
