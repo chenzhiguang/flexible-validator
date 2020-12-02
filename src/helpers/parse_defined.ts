@@ -13,6 +13,14 @@ const definedMap: { [key: string]: (args: any) => Pattern } = {
     return [(input) => isNumber(input), arg === true ? 'not_number' : arg];
   },
 
+  noNull: (arg): Pattern => {
+    return [(input) => input !== null, arg === true ? 'is_null' : arg];
+  },
+
+  noEmpty: (arg): Pattern => {
+    return [(input) => input !== '', arg === true ? 'is_empty' : arg];
+  },
+
   minlen: (arg): Pattern => {
     const [len, error] = Array.isArray(arg) ? arg : [arg];
 

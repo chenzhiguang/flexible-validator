@@ -58,10 +58,10 @@ const data = {
 };
 
 // Run all the validation patterns and output all the errors
-const resultAll = validator.validate(data);
+const resultAll = validator.validateAll(data);
 
 // Only return the first error and stop
-const resultFirst = validator.validateFirst(data);
+const resultFirst = validator.validate(data);
 
 console.log(resultAll);
 console.log(resultFirst);
@@ -71,16 +71,16 @@ console.log(resultFirst);
 
 _Note: returns `null` means pass the validation._
 
+### Validator.validateAll
+
+```typescript
+validateAll({[key:string]:any}): null | [key: string]: string[];
+```
+
 ### Validator.validate
 
 ```typescript
-validate({[key:string]:any}): null | [key: string]: string[];
-```
-
-### Validator.validateFirst
-
-```typescript
-validateFirst({[key:string]:any}): null | {field:string, error:string}
+validate({[key:string]:any}): null | {field:string, error:string}
 ```
 
 ## Pre-defined patterns
@@ -161,5 +161,35 @@ validateFirst({[key:string]:any}): null | {field:string, error:string}
 //
 {
   email: "wrong format",
+}
+```
+
+### `noNull: true | string`
+
+```typescript
+{
+  noNull: true,
+}
+
+//
+{
+  noNull: "Null is not allowed",
+}
+```
+
+### `noEmpty: true | string`
+
+NOTE: This is only used to check empty `string` in this moment  
+TODO: Check empty `object` and object `array` later when there is `array`
+and `object` options
+
+```typescript
+{
+  noEmpty: true,
+}
+
+//
+{
+  noNull: "It is empty",
 }
 ```

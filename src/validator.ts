@@ -20,7 +20,7 @@ export class Validator {
     }
   }
 
-  validate(fields: { [key: string]: any }, first?: boolean): null | Errors {
+  validateAll(fields: { [key: string]: any }, first?: boolean): null | Errors {
     const result: Errors = {};
     let hasError = false;
 
@@ -59,8 +59,8 @@ export class Validator {
     return hasError ? result : null;
   }
 
-  validateFirst(fields: { [key: string]: any }): null | Error {
-    const result = this.validate(fields, true);
+  validate(fields: { [key: string]: any }): null | Error {
+    const result = this.validateAll(fields, true);
 
     if (result !== null) {
       for (const field in result) {

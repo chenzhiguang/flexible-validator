@@ -5,6 +5,8 @@ export type CustomRules = { [key: string]: CustomRule };
 export type Restriction = {
   required?: string | true;
   string?: string | true;
+  noNull?: string | true;
+  noEmpty?: string | true;
   email?: string | true;
   number?: string | true;
   minlen?: number | [number, string?];

@@ -38,10 +38,10 @@ const data = {
 };
 
 // Run all the validation patterns and output all the errors
-const resultAll = validator.validate(data);
+const resultAll = validator.validateAll(data);
 
 // Only return the first error and stop
-const resultFirst = validator.validateFirst(data);
+const resultFirst = validator.validate(data);
 
 console.log(resultAll);
 console.log(resultFirst);
