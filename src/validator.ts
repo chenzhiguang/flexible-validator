@@ -38,7 +38,7 @@ export class Validator {
         if (required) {
           result[field] = [required === true ? 'required' : required];
         }
-        if (first === true) {
+        if (first === true && hasError) {
           return result;
         }
         continue;

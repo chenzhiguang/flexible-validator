@@ -1,6 +1,6 @@
 {
   "name": "flexible-validator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A light weight and flexible data validator for javascript projects",
   "main": "dist/index.js",
   "scripts": {
